@@ -135,16 +135,18 @@ template<typename T> ostream& operator << ( ostream &os, const set<T> &st ) { bo
 template<typename T> ostream& operator << ( ostream &os, const multiset<T> &st ) { bool space = false; for( T x : st ) { if( space ) os << " "; space = true; os << x; } return os; }
 template<typename T, typename V> istream& operator >> ( istream &is, pair<T, V> &p ) { return is >> p.ff >> p.ss; }
 template<typename T> istream& operator >> ( istream &is, vector<T> &v ) { for( T &x : v ) { is >> x; } return is; }template <typename T, typename... Args> void print(T t, Args... args) { cout << t << " "; print(args...); }
-template <typename T>
-T countOdd(T n,T k) {
-    return (n+1)/2-k/2;
-}
-
 
 void solve() {
-    int n,k; cin>>n>>k;
-    if(countOdd(n,n-k+1)&1) no;
-    else yes;
+    ll n ; cin>>n;
+    vl v1,v2;
+
+    fo(i,n){
+        ll x; cin>>x;
+        if(i&1) v1.pb(x);
+        else v2.pb(x);
+    }
+
+    cout<<max(sz(v1)+(v1.empty()?0:maxn(v1)),sz(v2)+(v2.empty()?0:maxn(v2)))<<endl;
 }
 
 int main() {
