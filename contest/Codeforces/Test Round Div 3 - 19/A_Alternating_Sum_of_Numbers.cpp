@@ -135,27 +135,14 @@ template<typename T> ostream& operator << ( ostream &os, const set<T> &st ) { bo
 template<typename T> ostream& operator << ( ostream &os, const multiset<T> &st ) { bool space = false; for( T x : st ) { if( space ) os << " "; space = true; os << x; } return os; }
 template<typename T, typename V> istream& operator >> ( istream &is, pair<T, V> &p ) { return is >> p.ff >> p.ss; }
 template<typename T> istream& operator >> ( istream &is, vector<T> &v ) { for( T &x : v ) { is >> x; } return is; }template <typename T, typename... Args> void print(T t, Args... args) { cout << t << " "; print(args...); }
-template <typename T>
-T sqrtBS(T n) {
-    if (n == 0 || n == 1) return n;
-    T lo = 1, hi = n;
-    while (lo < hi) {
-        T md = lo + (hi - lo + 1) / 2;
-        if (md <= n / md) lo = md;
-        else hi = md - 1;
-    }
-    return lo;
-}
-
-template <typename T>
-inline T triangularRoot(T y) {
-    T x = (-1 + sqrtBS(1 + 8 * y)) / 2;
-    return x;
-}
 
 void solve() {
-    ll a,b; cin>>a>>b;
-    cout<<triangularRoot(b-a)+1<<endl;
+    ll n; cin>>n;
+    vl v(n); cin>>v;
+    ll sum=0;
+
+    fo(i,n) if(i&1) sum -= v[i]; else sum += v[i];
+    cout<<sum<<endl;
 }
 
 int main() {
