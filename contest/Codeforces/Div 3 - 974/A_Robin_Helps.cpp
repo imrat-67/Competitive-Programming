@@ -19,13 +19,13 @@ using namespace __gnu_pbds;
 
 #define f(i, a, b) for (int i = a; i <= b; i++)
 #define r(i, a, b) for (int i = a; i >= b; i--)
-#define fc(i, a, b,c) for (int i = a; i < b; i+=c)
-#define rc(i, a, b,c) for (int i = a; i >= b; i-=c)
+#define fc(i, a, b, c) for (int i = a; i <= b; i+=c)
+#define rc(i, a, b, c) for (int i = a; i >= b; i-=c)
 #define each(i, v) for (auto& i : v)
-#define f0(i, n) for (int i = 0; i < n; i++)
-#define f1(i, n) for (int i = 1; i <= n; i++)
-#define r0(i, n) for (int i = n - 1; i >= 0; i--)
-#define r1(i, n) for (int i = n; i >= 1; i--)
+#define fo(i, n) for (int i = 0; i < n; i++)
+#define fi(i, n) for (int i = 1; i <= n; i++)
+#define ro(i, n) for (int i = n - 1; i >= 0; i--)
+#define ri(i, n) for (int i = n; i >= 1; i--)
 #define fit(it, v) for (auto it = v.begin(); it != v.end(); it++)
 #define rit(it, v) for (auto it = v.rbegin(); it != v.rend(); it++)
 
@@ -137,34 +137,18 @@ template<typename T, typename V> istream& operator >> ( istream &is, pair<T, V> 
 template<typename T> istream& operator >> ( istream &is, vector<T> &v ) { for( T &x : v ) { is >> x; } return is; }template <typename T, typename... Args> void print(T t, Args... args) { cout << t << " "; print(args...); }
 
 void solve() {
-    int n; cin>>n;
-    string s; cin>>s;
-    if(not isPerfectSquare(n)) no;
-    else {
-        int rt = sqrt(n);
-        bool f = 1;
-        f0(i,rt) f &= (s[i]=='1');
-        debug(f);
-        f1(i,rt-2){
-            f &= (s[i*rt]=='1');
-            debug(i*rt+1);
-            debug(i*rt+rt-2);
-            f(j,i*rt+1,i*rt+rt-2){
-             f &= (s[j]=='0');
-             debug(f);
-             debug(s[j]);
-             debug(j);
-             cerr<<endl;
-            }
-            f &= (s[i*rt+rt-1]=='1');
-        }
-        debug(f);
-        f(i,rt*(rt-1),rt*rt-1) f &= (s[i]=='1');
-        debug(f);
-
-        if(f) yes;
-        else no;
+    ll n,k; cin>>n>>k;
+    vl v(n); cin>>v;
+    
+    ll cnt = 0, rb = 0;
+    fo(i,n){
+        if(v[i] >= k) rb += v[i];
+        else if(v[i] == 0 and rb) cnt++, rb--;
+        debug(v[i]);
+        debug(cnt);
+        debug(rb);
     }
+    cout<<cnt<<endl;
 }
 
 int main() {

@@ -17,15 +17,15 @@ using namespace __gnu_pbds;
 #define yes cout << "YES" << endl
 #define no cout << "NO" << endl
 
-#define f(i, a, b) for (int i = a; i < b; i++)
+#define f(i, a, b) for (int i = a; i <= b; i++)
 #define r(i, a, b) for (int i = a; i >= b; i--)
-#define fc(i, a, b,c) for (int i = a; i < b; i+=c)
-#define rc(i, a, b,c) for (int i = a; i >= b; i-=c)
+#define fc(i, a, b, c) for (int i = a; i <= b; i+=c)
+#define rc(i, a, b, c) for (int i = a; i >= b; i-=c)
 #define each(i, v) for (auto& i : v)
-#define f0(i, n) for (int i = 0; i < n; i++)
-#define f1(i, n) for (int i = 1; i <= n; i++)
-#define r0(i, n) for (int i = n - 1; i >= 0; i--)
-#define r1(i, n) for (int i = n; i >= 1; i--)
+#define fo(i, n) for (int i = 0; i < n; i++)
+#define fi(i, n) for (int i = 1; i <= n; i++)
+#define ro(i, n) for (int i = n - 1; i >= 0; i--)
+#define ri(i, n) for (int i = n; i >= 1; i--)
 #define fit(it, v) for (auto it = v.begin(); it != v.end(); it++)
 #define rit(it, v) for (auto it = v.rbegin(); it != v.rend(); it++)
 
@@ -133,17 +133,12 @@ template<typename T, typename V> ostream& operator << ( ostream &os, const map<T
 template<typename T> ostream& operator << ( ostream &os, const vector<T> &v ) { bool space = false; for( T x : v ) { if( space ) os << " "; space = true; os << x; } return os; }
 template<typename T> ostream& operator << ( ostream &os, const set<T> &st ) { bool space = false; for( T x : st ) { if( space ) os << " "; space = true; os << x; } return os; }
 template<typename T> ostream& operator << ( ostream &os, const multiset<T> &st ) { bool space = false; for( T x : st ) { if( space ) os << " "; space = true; os << x; } return os; }
-template<typename T, typename V> istream& operator >> ( istream &is, pair<T, V> &p ) { return is >> p.T >> p.V; }
+template<typename T, typename V> istream& operator >> ( istream &is, pair<T, V> &p ) { return is >> p.ff >> p.ss; }
 template<typename T> istream& operator >> ( istream &is, vector<T> &v ) { for( T &x : v ) { is >> x; } return is; }template <typename T, typename... Args> void print(T t, Args... args) { cout << t << " "; print(args...); }
 
 void solve() {
-    int t; cin >> t;
-    while(t--){
-        int a,b; cin >> a >> b;
-        if(a&1) no;
-        else if(!a and b&1) no;
-        else yes;
-    }
+    int a,b; cin>>a>>b;
+    cout<<6-a-b<<endl;
 }
 
 int main() {
