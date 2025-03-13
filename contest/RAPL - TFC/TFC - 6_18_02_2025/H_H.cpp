@@ -1,8 +1,5 @@
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
 using namespace std;
-using namespace __gnu_pbds;
 
 #define ll long long
 #define ull unsigned long long
@@ -18,8 +15,13 @@ using namespace __gnu_pbds;
 #define endl "\n"
 #define yes cout << "YES" << endl
 #define no cout << "NO" << endl
+#define fsp(x) cout << fixed << setprecision(x)
 #define fast_IO ios_base::sync_with_stdio(0), cin.tie(0), cout.tie(0)
 
+#define f(i, a, b) for (int i = a; i <= b; i++)
+#define r(i, a, b) for (int i = a; i >= b; i--)
+#define fc(i, a, b, c) for (int i = a; i <= b; i+=c)
+#define rc(i, a, b, c) for (int i = a; i >= b; i-=c)
 #define each(i, v) for (auto& i : v)
 #define fo(i, n) for (int i = 0; i < n; i++)
 #define fi(i, n) for (int i = 1; i <= n; i++)
@@ -58,43 +60,24 @@ template<typename T> ostream& operator << ( ostream &os, const set<T> &st ) { bo
 template<typename T> ostream& operator << ( ostream &os, const multiset<T> &st ) { bool space = false; for( T x : st ) { if( space ) os << " "; space = true; os << x; } return os; }
 template<typename T, typename V> istream& operator >> ( istream &is, pair<T, V> &p ) { return is >> p.ff >> p.ss; }
 template<typename T> istream& operator >> ( istream &is, vector<T> &v ) { for( T &x : v ) { is >> x; } return is;}
+template <typename T, typename... Args> void print(T t, Args... args) { cout << t << " "; print(args...); }
 
-inline ll gcd(ll a, ll b) { return b == 0 ? a : gcd(b, a % b); }
-inline ll lcm(ll a, ll b) { return a * (b / gcd(a, b)); }
-inline ll ceil(ll p, ll q) { return p < 0 ? p / q : p / q + !!(p % q); }
-inline ll floor(ll p, ll q) { return p > 0 ? p / q : p / q - !!(p % q); }
-inline double logb(ll base, ll num) { return log(num) / log(base); }
-inline bool isPerfectSquare(ll x) { ll s = sqrt(x); return s * s == x; }
-inline bool isPowerOfN(ll x, ll n) { if (x == 0) return false; ll p = pow(x, 1.0 / n); return (ll)pow(p, n) == x; }
-inline ll randN(int min, int max) {static random_device rd; static mt19937 gen(rd()); std::uniform_int_distribution<> dis(min, max); return dis(gen); }
-inline ll modAdd(ll a, ll b, ll mod) { return (a % mod + b % mod) % mod; }
-inline ll modSub(ll a, ll b, ll mod) { return (a % mod - b % mod + mod) % mod; }
-inline ll modMul(ll a, ll b, ll mod) { return (a % mod * b % mod) % mod; }
-inline ll modPow(ll base, ll exp, ll mod) {ll result = 1; while (exp > 0) { if (exp & 1) result = modMul(result, base, mod); base = modMul(base, base, mod); exp >>= 1;}return result;}
-inline ll modInv(ll a, ll mod) { return modPow(a, mod - 2, mod); }
-inline ll modDiv(ll a, ll b, ll mod) { return modMul(a, modInv(b, mod), mod); }
-vector<ll> baseConvert(ll num, ll base) { vector<ll> v; while (num) { v.pb(num % base); num /= base; } return v; }
-ll sumOfDigits(ll n) { ll sum = 0; while (n != 0) { sum += n % 10; n /= 10; } return sum; }
-ll countDigits(ll n) { return floor(log10(n) + 1); }
+ll dpf(int i,int h,int s,vvi& v){
 
-#define rall(x) x.rbegin(), x.rend()
-#define sortall(x) sort(all(x))
-#define rev(x) reserse(all(x))
-#define mem(a,b) memset(a,b,sizeof(a))
-#define lb(v, x) lower_bound(all(v), x) - v.begin()
-#define ub(v, x) upper_bound(all(v), x) - v.begin()
-#define maxn(v) *max_element(all(v))
-#define minn(v) *min_element(all(v))
-#define sumn(v) accumulate(all(v), 0LL)
-
+    if(s<0) h += s,s=0;
+    if(h<=0) return -INF;
+    if(i==sz(v)) return 0;
+    return max({0ll,dpf(i+1,h-v[i][0],s-v[i][1],v)+v[i][2],dpf(i+1,h,s,v)});
+}
 
 void solve() {
-    ll n , k; cin >> n >> k;
-    if(k == 1) cout<<n<<endl;
-    else{
-        vector<ll> v = baseConvert(n, k);
-        cout<<sumn(v)<<endl;
+    int n,h,s; cin>>n>>h>>s;
+    vvi v;
+    fo(i,n){
+        vi x(3); cin>>x; 
+        v.pb(x);
     }
+    cout<<dpf(0,h,s,v)<<endl;    
 }
 
 int main() {
@@ -107,7 +90,7 @@ int main() {
     // #endif  
 
     int t = 1;
-    cin >> t;
+    //cin >> t;
     for (int caseNo = 1; caseNo <= t; caseNo++) {
         //printCase(caseNo, solve());
         solve();

@@ -1,8 +1,5 @@
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
 using namespace std;
-using namespace __gnu_pbds;
 
 #define ll long long
 #define ull unsigned long long
@@ -13,11 +10,12 @@ using namespace __gnu_pbds;
 #define ff first
 #define ss second
 #define all(x) x.begin(), x.end()
-#define sz(x) ((int)(x).size())
+#define len(x) ((int)(x).size())
 #define PI 3.1415926535897932384626
 #define endl "\n"
 #define yes cout << "YES" << endl
 #define no cout << "NO" << endl
+#define fsp(x) cout << fixed << setprecision(x)
 #define fast_IO ios_base::sync_with_stdio(0), cin.tie(0), cout.tie(0)
 
 #define each(i, v) for (auto& i : v)
@@ -58,48 +56,76 @@ template<typename T> ostream& operator << ( ostream &os, const set<T> &st ) { bo
 template<typename T> ostream& operator << ( ostream &os, const multiset<T> &st ) { bool space = false; for( T x : st ) { if( space ) os << " "; space = true; os << x; } return os; }
 template<typename T, typename V> istream& operator >> ( istream &is, pair<T, V> &p ) { return is >> p.ff >> p.ss; }
 template<typename T> istream& operator >> ( istream &is, vector<T> &v ) { for( T &x : v ) { is >> x; } return is;}
+template <typename T, typename... Args> void print(T t, Args... args) { cout << t << " "; print(args...); }
 
-inline ll gcd(ll a, ll b) { return b == 0 ? a : gcd(b, a % b); }
-inline ll lcm(ll a, ll b) { return a * (b / gcd(a, b)); }
-inline ll ceil(ll p, ll q) { return p < 0 ? p / q : p / q + !!(p % q); }
-inline ll floor(ll p, ll q) { return p > 0 ? p / q : p / q - !!(p % q); }
-inline double logb(ll base, ll num) { return log(num) / log(base); }
-inline bool isPerfectSquare(ll x) { ll s = sqrt(x); return s * s == x; }
-inline bool isPowerOfN(ll x, ll n) { if (x == 0) return false; ll p = pow(x, 1.0 / n); return (ll)pow(p, n) == x; }
-inline ll randN(int min, int max) {static random_device rd; static mt19937 gen(rd()); std::uniform_int_distribution<> dis(min, max); return dis(gen); }
-inline ll modAdd(ll a, ll b, ll mod) { return (a % mod + b % mod) % mod; }
-inline ll modSub(ll a, ll b, ll mod) { return (a % mod - b % mod + mod) % mod; }
-inline ll modMul(ll a, ll b, ll mod) { return (a % mod * b % mod) % mod; }
-inline ll modPow(ll base, ll exp, ll mod) {ll result = 1; while (exp > 0) { if (exp & 1) result = modMul(result, base, mod); base = modMul(base, base, mod); exp >>= 1;}return result;}
-inline ll modInv(ll a, ll mod) { return modPow(a, mod - 2, mod); }
-inline ll modDiv(ll a, ll b, ll mod) { return modMul(a, modInv(b, mod), mod); }
-vector<ll> baseConvert(ll num, ll base) { vector<ll> v; while (num) { v.pb(num % base); num /= base; } return v; }
-ll sumOfDigits(ll n) { ll sum = 0; while (n != 0) { sum += n % 10; n /= 10; } return sum; }
-ll countDigits(ll n) { return floor(log10(n) + 1); }
+ll const mxn = 1e6 + 7, b1 = 1e9 + 21, b2 = 1e9 + 181, m1 = 1e9 + 7, m2 = 1e9 + 9;
+ll p1[mxn], p2[mxn], ip1[mxn], ip2[mxn],ib1 = 516162138, ib2 = 374699174;
 
-#define rall(x) x.rbegin(), x.rend()
-#define sortall(x) sort(all(x))
-#define rev(x) reserse(all(x))
-#define mem(a,b) memset(a,b,sizeof(a))
-#define lb(v, x) lower_bound(all(v), x) - v.begin()
-#define ub(v, x) upper_bound(all(v), x) - v.begin()
-#define maxn(v) *max_element(all(v))
-#define minn(v) *min_element(all(v))
-#define sumn(v) accumulate(all(v), 0LL)
+ll exp(ll a, ll b, ll m) {
+    ll r = 1; while (b) {
+        if (b & 1) r = r * a % m;
+        a = a * a % m,b /= 2;
+    }   return r;
+}
+
+void pre_cal() {
+    p1[0] = p2[0] = ip1[0] = ip2[0] = 1;
+    ib1 = exp(b1, m1 - 2, m1), ib2 = exp(b2, m2 - 2, m2);
+    for (ll i = 1; i < mxn; i++) {
+        p1[i] = p1[i - 1] * b1 % m1, p2[i] = p2[i - 1] * b2 % m2;
+        ip1[i] = ip1[i - 1] * ib1 % m1, ip2[i] = ip2[i - 1] * ib2 % m2;
+    }
+}
+
+class hashing {
+    vector<ll> h1, h2;
+    ll n;
+
+public:
+    hashing(string s) {
+        n = (int)s.size();
+        h1.resize(n + 2);
+        h2.resize(n + 2);
+
+        h1[0] = h2[0] = 0;
+        for (ll i = 1; i <= n; i++) {
+            h1[i] = (h1[i - 1] + s[i - 1] * p1[i - 1]) % m1;
+            h2[i] = (h2[i - 1] + s[i - 1] * p2[i - 1]) % m2;
+        }
+    }
+
+    ll hash_val(ll l, ll r) {
+        ll H1 = (h1[r + 1] - h1[l] + m1) * ip1[l] % m1;
+        ll H2 = (h2[r + 1] - h2[l] + m2) * ip2[l] % m2;
+        return H1 << 32 | H2;
+    }
+
+    static ll string_hash(const string& s) {
+        ll h1 = 0, h2 = 0;
+        ll power1 = 1, power2 = 1;
+        for (char ch : s) {
+            h1 = (h1 + ch * power1) % m1, h2 = (h2 + ch * power2) % m2;
+            power1 = power1 * b1 % m1, power2 = power2 * b2 % m2;
+        }
+        return h1 << 32 | h2;
+    }
+};
+
 
 
 void solve() {
-    ll n , k; cin >> n >> k;
-    if(k == 1) cout<<n<<endl;
-    else{
-        vector<ll> v = baseConvert(n, k);
-        cout<<sumn(v)<<endl;
-    }
+    string a,b; cin>>a>>b;
+    hashing ah(a),bh(b);
+    
+    ll n = len(a), m = len(b), cnt = 0;
+    fo(i,min(n,m)) if(ah.hash_val(0,i)==bh.hash_val(0,i)) cnt++;
+
+    cout<<n+m-cnt+(cnt!=0)<<endl;
 }
 
 int main() {
     fast_IO;
-
+    pre_cal();
     // #ifndef ONLINE_JUDGE
     //     freopen("input.txt", "r", stdin);
     //     freopen("output.txt", "w", stdout);
